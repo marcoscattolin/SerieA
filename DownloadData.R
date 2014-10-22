@@ -135,10 +135,6 @@ history <- mutate(history,
        )
 
 
-
-
-
-
 playersstats <- tbl_df(playersstats)
 colnames(playersstats) <- gsub("[^a-z0-9]","",tolower(colnames(playersstats)))
 colnames(playersstats)[6] <- "doppieammonizioni"
@@ -155,8 +151,6 @@ playersstats <- mutate(playersstats,
         tiri = as.numeric(as.character(tiri)),
         squadra = as.factor(squadra)
         )
-
-
 
 
 
@@ -186,8 +180,10 @@ stats <- mutate(stats,
         primotempofatti3145 = as.numeric(as.character(primotempofatti3145)),      
         secondotempofatti3145 = as.numeric(as.character(secondotempofatti3145)),  
         primotemposubiti3145 = as.numeric(as.character(primotemposubiti3145)),    
-        secondotemposubiti3145 = as.numeric(as.character(secondotemposubiti3145))
-        )
+        secondotemposubiti3145 = as.numeric(as.character(secondotemposubiti3145)),
+        secspossessopalla = 3600*hour(possessopalla) + 60*minute(possessopalla) + second(possessopalla),
+        secssupremaziaterritoriale = 3600*hour(supremaziaterritoriale) + 60*minute(supremaziaterritoriale) + second(supremaziaterritoriale)
+        ) %>% select(-possessopalla,-supremaziaterritoriale)
 
 ##### SAVE
 save(classifica,history,playersstats,stats,file = paste0("./Rdata/",as.character(Sys.Date()),".rda"))
