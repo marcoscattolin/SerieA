@@ -1,3 +1,4 @@
+setwd("~/GitHub/SerieA")
 library(XML)
 library(reshape2)
 library(lubridate)
