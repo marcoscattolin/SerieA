@@ -2,6 +2,7 @@ setwd("~/GitHub/SerieA")
 library(XML)
 library(reshape2)
 library(lubridate)
+library(dplyr)
 
 url <- "http://www.legaseriea.it/it/"
 html <- htmlTreeParse(url,useInternalNodes=T)
@@ -98,6 +99,97 @@ stats[,15:26] <- sapply(15:26,function(x) gsub("\\(%\\)","\\(0%\\)",stats[,x]))
 stats[,15:26] <- sapply(15:26,function(x) as.numeric(gsub("^[0-9]|[^0-9]","",stats[,x])))
 
 
+#format columns
+classifica <- tbl_df(classifica)
+colnames(classifica) <- gsub("[^a-z0-9]","",tolower(colnames(classifica)))
+classifica <- mutate(classifica,
+       punti = as.numeric(as.character(punti)),                            
+       giocate = as.numeric(as.character(giocate)),                        
+       vinte = as.numeric(as.character(vinte)),                            
+       pareggiate = as.numeric(as.character(pareggiate)),                  
+       perse = as.numeric(as.character(perse)),                            
+       giocateincasa = as.numeric(as.character(giocateincasa)),            
+       vinteincasa = as.numeric(as.character(vinteincasa)),                
+       pareggiateincasa = as.numeric(as.character(pareggiateincasa)),      
+       perseincasa = as.numeric(as.character(perseincasa)),                
+       giocatefuoricasa = as.numeric(as.character(giocatefuoricasa)),      
+       vintefuoricasa = as.numeric(as.character(vintefuoricasa)),          
+       pareggiatefuoricasa = as.numeric(as.character(pareggiatefuoricasa)),
+       persefuoricasa = as.numeric(as.character(persefuoricasa)),          
+       retifatte = as.numeric(as.character(retifatte)),                    
+       retisubite = as.numeric(as.character(retisubite))
+       )
+
+
+
+history <- tbl_df(history)
+colnames(history) <- gsub("[^a-z0-9]","",tolower(colnames(history)))
+history <- mutate(history,
+        posizione = as.numeric(as.character(posizione)),
+        punti = as.numeric(as.character(punti)),
+        partitegiocate = as.numeric(as.character(partitegiocate)),
+        vinte = as.numeric(as.character(vinte)),
+        pareggiate = as.numeric(as.character(pareggiate)),
+        perse = as.numeric(as.character(perse)),
+        squadra = as.factor(squadra)
+       )
+
+
+
+
+
+
+playersstats <- tbl_df(playersstats)
+colnames(playersstats) <- gsub("[^a-z0-9]","",tolower(colnames(playersstats)))
+colnames(playersstats)[6] <- "doppieammonizioni"
+
+playersstats <- mutate(playersstats,
+        presenze = as.numeric(as.character(presenze)),                
+        minutigiocati = as.numeric(as.character(minutigiocati)),      
+        goal = as.numeric(as.character(goal)),                        
+        ammonizioni = as.numeric(as.character(ammonizioni)),          
+        doppieammonizioni = as.numeric(as.character(doppieammonizioni)),        
+        espulsioni = as.numeric(as.character(espulsioni)),            
+        pallerecuperate = as.numeric(as.character(pallerecuperate)),  
+        passaggiriusciti = as.numeric(as.character(passaggiriusciti)),
+        tiri = as.numeric(as.character(tiri)),
+        squadra = as.factor(squadra)
+        )
+
+
+
+
+
+stats <- tbl_df(stats)
+colnames(stats) <- gsub("[^a-z0-9]","",tolower(colnames(stats)))
+
+stats <- mutate(stats,
+        percattaccoallaporta = as.numeric(as.character(percattaccoallaporta)),    
+        percpassaggiriusciti = as.numeric(as.character(percpassaggiriusciti)),    
+        percpericolosita = as.numeric(as.character(percpericolosita)),            
+        percprotezionearea = as.numeric(as.character(percprotezionearea)),        
+        angoli = as.numeric(as.character(angoli)),                                
+        fallicommessi = as.numeric(as.character(fallicommessi)),                  
+        giocateutili = as.numeric(as.character(giocateutili)),                    
+        goalfatti = as.numeric(as.character(goalfatti)),                          
+        pallegiocate = as.numeric(as.character(pallegiocate)),                    
+        tiri = as.numeric(as.character(tiri)),                                    
+        tiridentro = as.numeric(as.character(tiridentro)),                        
+        primotempofatti015 = as.numeric(as.character(primotempofatti015)),        
+        secondotempofatti015 = as.numeric(as.character(secondotempofatti015)),    
+        primotemposubiti015 = as.numeric(as.character(primotemposubiti015)),      
+        secondotemposubiti015 = as.numeric(as.character(secondotemposubiti015)),  
+        primotempofatti1630 = as.numeric(as.character(primotempofatti1630)),      
+        secondotempofatti1630 = as.numeric(as.character(secondotempofatti1630)),  
+        primotemposubiti1630 = as.numeric(as.character(primotemposubiti1630)),    
+        secondotemposubiti1630 = as.numeric(as.character(secondotemposubiti1630)),
+        primotempofatti3145 = as.numeric(as.character(primotempofatti3145)),      
+        secondotempofatti3145 = as.numeric(as.character(secondotempofatti3145)),  
+        primotemposubiti3145 = as.numeric(as.character(primotemposubiti3145)),    
+        secondotemposubiti3145 = as.numeric(as.character(secondotemposubiti3145))
+        )
+
+##### SAVE
 save(classifica,history,playersstats,stats,file = paste0("./Rdata/",as.character(Sys.Date()),".rda"))
 
 
