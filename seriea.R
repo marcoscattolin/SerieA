@@ -27,14 +27,11 @@ full <- full[,-grep("^X.",colnames(full))]
 tmp <- llply(data,function(x) dim(x)[1])
 full$season <- unname(unlist(mapply(rep,names(tmp),tmp,SIMPLIFY=T)))
 full <- full %>% filter(FTR != "")
-
-
-
-
 full <- full %>% mutate(FTR = factor(FTR))
 levels(full$FTR) <- c("Away","Draw","Home")
 
 
+# INSPECT BETTER ----------------------------------------------------------
 better <- 7
 ix <- (23+(3*(better-1))):(23+3*(better-1)+2)
 colnames(full)[ix]
