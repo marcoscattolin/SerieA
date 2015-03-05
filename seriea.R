@@ -30,8 +30,7 @@ full <- full %>% filter(FTR != "")
 full <- full %>% mutate(FTR = factor(FTR))
 levels(full$FTR) <- c("Away","Draw","Home")
 full$dowloadtimestamp <- Sys.time()
-
-save(full, file = "./input/full.rda")
+save(full, file = paste0("./input/full_",Sys.Date(),".rda"))
 
 
 
