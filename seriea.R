@@ -29,6 +29,11 @@ full$season <- unname(unlist(mapply(rep,names(tmp),tmp,SIMPLIFY=T)))
 full <- full %>% filter(FTR != "")
 full <- full %>% mutate(FTR = factor(FTR))
 levels(full$FTR) <- c("Away","Draw","Home")
+full$dowloadtimestamp <- Sys.time()
+
+save(full, file = "./input/full.rda")
+
+
 
 
 # INSPECT BETTER ----------------------------------------------------------
