@@ -22,13 +22,18 @@ src$links <- paste0("http://football-data.co.uk/",src$links)
 data <- llply(src$links,read.csv,header = T,stringsAsFactor = F)
 names(data) <- gsub("[^a-z0-9]","",tolower(src$season))
 
+#merge data
 full <- tbl_df(rbind.fill(data))
 full <- full[,-grep("^X.",colnames(full))]
 tmp <- llply(data,function(x) dim(x)[1])
 full$season <- unname(unlist(mapply(rep,names(tmp),tmp,SIMPLIFY=T)))
+
+#rename target var
 full <- full %>% filter(FTR != "")
 full <- full %>% mutate(FTR = factor(FTR))
 levels(full$FTR) <- c("Away","Draw","Home")
+
+#insert timestamp and save
 full$dowloadtimestamp <- Sys.time()
 save(full, file = paste0("./input/full_",Sys.Date(),".rda"))
 
